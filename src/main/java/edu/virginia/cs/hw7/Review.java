@@ -11,4 +11,12 @@ public class Review {
         this.text = text;
         this.rating = rating;
     }
+
+    public Student getStudent() { return student; }
+
+    public Course getCourse() { return course; }
+
+    public String getText() { return text; }
+
+    public int getRating() { return rating; }
 }

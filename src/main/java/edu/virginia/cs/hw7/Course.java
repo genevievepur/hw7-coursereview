@@ -7,4 +7,8 @@ public class Course {
         this.department = department;
         this.catalogNumber = catalogNumber;
     }
+
+    public String getDepartment() { return department; }
+
+    public int getCatalogNumber() { return catalogNumber; }
 }
