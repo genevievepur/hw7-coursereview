@@ -6,6 +6,8 @@ import edu.virginia.cs.hw7.Student;
 
 import javax.swing.plaf.nimbus.State;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseManager {
     Connection connection;
@@ -65,6 +67,8 @@ public class DatabaseManager {
                 """, name, password);
 
         try {
+            if (connection.isClosed()) { throw new IllegalStateException("Manager has not connected yet."); }
+
             Statement st = connection.createStatement();
             st.execute(insertQuery);
             st.close();
@@ -75,6 +79,8 @@ public class DatabaseManager {
 
     public boolean doesNameExist(String name) {
         try {
+            if (connection.isClosed()) { throw new IllegalStateException("Manager has not connected yet."); }
+
             Statement st = connection.createStatement();
             String checkQuery = String.format("""
                     SELECT * FROM Students WHERE Name = "%s";
@@ -93,6 +99,51 @@ public class DatabaseManager {
         return false;
     }
 
+    public Student getStudentByName(String name) {
+        Student student;
+        try {
+            if (connection.isClosed()) { throw new IllegalStateException("Manager has not connected yet."); }
+
+            Statement st = connection.createStatement();
+            String selectQuery = String.format("""
+                    SELECT * FROM Students WHERE Name = "%s";
+                    """, name);
+            ResultSet rs = st.executeQuery(selectQuery);
+
+            if (!rs.next()) {
+                throw new IllegalArgumentException("No such student exists in database.");
+            }
+
+            String password = rs.getString("Password");
+            student = new Student(name, password);
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        }
+        return student;
+    }
+
+    public Student getStudentByID(int studentID) {
+        Student student;
+        try {
+            if (connection.isClosed()) { throw new IllegalStateException("Manager has not connected yet."); }
+
+            Statement st = connection.createStatement();
+            String selectQuery = "SELECT * FROM Students WHERE ID = " + studentID + ";";
+            ResultSet rs = st.executeQuery(selectQuery);
+
+            if (!rs.next()) {
+                throw new IllegalArgumentException("No such student exists in database.");
+            }
+
+            String name = rs.getString("Name");
+            String password = rs.getString("Password");
+            student = new Student(name, password);
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        }
+        return student;
+    }
+
     public void addCourse(Course course) {
         String department = course.getDepartment();
         int catalogNum = course.getCatalogNumber();
@@ -103,6 +154,8 @@ public class DatabaseManager {
                 """, department, catalogNum);
 
         try {
+            if (connection.isClosed()) { throw new IllegalStateException("Manager has not connected yet."); }
+
             Statement st = connection.createStatement();
             st.execute(insertQuery);
             st.close();
@@ -113,6 +166,8 @@ public class DatabaseManager {
 
     public boolean doesCourseExist(String department, int catalogNum) {
         try {
+            if (connection.isClosed()) { throw new IllegalStateException("Manager has not connected yet."); }
+
             Statement st = connection.createStatement();
             String checkQuery = String.format("""
                     SELECT * FROM Students WHERE Department = "%s" AND Catalog_Number = "%d";
@@ -144,6 +199,8 @@ public class DatabaseManager {
                 """, studentID, courseID, review.getText(), review.getRating());
 
         try {
+            if (connection.isClosed()) { throw new IllegalStateException("Manager has not connected yet."); }
+
             Statement st = connection.createStatement();
             st.execute(insertQuery);
             st.close();
@@ -158,6 +215,8 @@ public class DatabaseManager {
         int studentID;
 
         try {
+            if (connection.isClosed()) { throw new IllegalStateException("Manager has not connected yet."); }
+
             Statement st = connection.createStatement();
             String selectQuery = String.format("""
                     SELECT * FROM Students WHERE Name = "%s";
@@ -182,6 +241,8 @@ public class DatabaseManager {
         int courseID;
 
         try {
+            if (connection.isClosed()) { throw new IllegalStateException("Manager has not connected yet."); }
+
             Statement st = connection.createStatement();
             String selectQuery = String.format("""
                     SELECT * FROM Courses WHERE Department = "%s" AND Catalog_Number = "%d";
@@ -198,5 +259,37 @@ public class DatabaseManager {
             throw new IllegalStateException(e);
         }
         return courseID;
+    }
+
+    public List<Review> getReviewsOfCourse(Course course) {
+        List<Review> reviews = new ArrayList<>();
+        int courseID = getCourseID(course);
+        try {
+            if (connection.isClosed()) {
+                throw new IllegalStateException("Manager has not connected yet.");
+            }
+
+            Statement st = connection.createStatement();
+//            String selectQuery = String.format("""
+//                    SELECT * FROM Reviews WHERE CourseID = "%d";
+//                    """, courseID);
+
+            String selectQuery = "SELECT * FROM Reviews WHERE CourseID = " + courseID + ";";
+            ResultSet rs = st.executeQuery(selectQuery);
+
+            while (rs.next()) {
+                int studentID = rs.getInt("StudentID");
+                Student student = getStudentByID(studentID);
+                String text = rs.getString("Text");
+                int rating = rs.getInt("Rating");
+                Review review = new Review(student, course, text, rating);
+                reviews.add(review);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        }
+        return reviews;
     }
 }
