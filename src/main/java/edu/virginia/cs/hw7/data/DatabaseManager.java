@@ -17,12 +17,12 @@ public class DatabaseManager {
         String databaseURL = "jdbc:sqlite:" + databaseName;
 
         try {
-            Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection(databaseURL);
-
             if (connection != null && !connection.isClosed()) {
                 throw new IllegalStateException("Already connected to database.");
             }
+
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection(databaseURL);
 
         } catch (ClassNotFoundException e) {
             throw new IllegalStateException(e);
@@ -32,15 +32,15 @@ public class DatabaseManager {
     }
 
     public void createTables() {
-        String sqlCreateStudents = "CREATE TABLE IF NOT EXISTS Students (ID INT(5) NOT NULL AUTOINCREMENT, " +
-                "Name VARCHAR(255) NOT NULL, Password VARCHAR(255) NOT NULL, PRIMARY KEY(ID))";
+        String sqlCreateStudents = "CREATE TABLE IF NOT EXISTS Students (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "Name VARCHAR(255) NOT NULL, Password VARCHAR(255) NOT NULL)";
 
-        String sqlCreateCourses = "CREATE TABLE IF NOT EXISTS Courses (ID INT(5) NOT NULL AUTOINCREMENT, " +
-                "Department VARCHAR(4) NOT NULL, Catalog_Number INT(4) NOT NULL, PRIMARY KEY(ID))";
+        String sqlCreateCourses = "CREATE TABLE IF NOT EXISTS Courses (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "Department VARCHAR(4) NOT NULL, Catalog_Number INT(4) NOT NULL)";
 
-        String sqlCreateReviews = "CREATE TABLE IF NOT EXISTS Reviews (ID (INT(5) NOT NULL AUTOINCREMENT, " +
+        String sqlCreateReviews = "CREATE TABLE IF NOT EXISTS Reviews (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "StudentID INT(5) NOT NULL, CourseID INT(5) NOT NULL, Text VARCHAR(255) NOT NULL, " +
-                "Rating INT(1) NOT NULL, PRIMARY KEY(ID), FOREIGN KEY (StudentID) REFERENCES Students(ID), " +
+                "Rating INT(1) NOT NULL, FOREIGN KEY (StudentID) REFERENCES Students(ID), " +
                 "FOREIGN KEY (CourseID) REFERENCES Courses(ID))";
 
         try {
@@ -57,17 +57,61 @@ public class DatabaseManager {
         }
     }
 
+    public void clear() {
+        try {
+            if (connection.isClosed()) {
+                throw new IllegalStateException("Manager has not connected yet.");
+            }
+
+            String clearStudents = "DELETE FROM Students";
+            String clearCourses = "DELETE FROM Courses";
+            String clearReviews = "DELETE FROM Reviews";
+
+            Statement st = connection.createStatement();
+            st.execute(clearStudents);
+            st.execute(clearCourses);
+            st.execute(clearReviews);
+            st.close();
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public void deleteTables() {
+        try {
+            if (connection.isClosed()) {
+                throw new IllegalStateException("Manager has not connected yet.");
+            }
+
+            String deleteStudents = "DROP TABLE IF EXISTS Students";
+            String deleteCourses = "DROP TABLE IF EXISTS Courses";
+            String deleteReviews = "DROP TABLE IF EXISTS Reviews";
+
+            Statement st = connection.createStatement();
+            st.execute(deleteStudents);
+            st.execute(deleteCourses);
+            st.execute(deleteReviews);
+            st.close();
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     public void addStudent(Student student) {
         String name = student.getName();
         String password = student.getPassword();
 
-        String insertQuery = String.format("""
-                INSERT INTO Students (ID, Name, Password)
-                VALUES (NULL, "%s", "%s");
-                """, name, password);
+        if (doesNameExist(name)) {
+            throw new IllegalArgumentException("Student already exists in database.");
+        }
 
         try {
             if (connection.isClosed()) { throw new IllegalStateException("Manager has not connected yet."); }
+
+            String insertQuery = String.format("""
+                INSERT INTO Students (Name, Password)
+                VALUES ("%s", "%s");
+                """, name, password);
 
             Statement st = connection.createStatement();
             st.execute(insertQuery);
@@ -149,8 +193,8 @@ public class DatabaseManager {
         int catalogNum = course.getCatalogNumber();
 
         String insertQuery = String.format("""
-                INSERT INTO Courses (ID, Department, Catalog_Number)
-                VALUES (NULL, "%s", "%d");
+                INSERT INTO Courses (Department, Catalog_Number)
+                VALUES ("%s", "%d");
                 """, department, catalogNum);
 
         try {
@@ -170,7 +214,7 @@ public class DatabaseManager {
 
             Statement st = connection.createStatement();
             String checkQuery = String.format("""
-                    SELECT * FROM Students WHERE Department = "%s" AND Catalog_Number = "%d";
+                    SELECT * FROM Courses WHERE Department = "%s" AND Catalog_Number = "%d";
                     """, department, catalogNum);
             ResultSet sameCourse = st.executeQuery(checkQuery);
 
@@ -194,8 +238,8 @@ public class DatabaseManager {
         int courseID = getCourseID(course);
 
         String insertQuery = String.format("""
-                INSERT INTO Reviews (ID, StudentID, CourseID, Text, Rating)
-                VALUES (NULL, "%d", "%d", "%s", "%d");
+                INSERT INTO Reviews (StudentID, CourseID, Text, Rating)
+                VALUES ("%d", "%d", "%s", "%d");
                 """, studentID, courseID, review.getText(), review.getRating());
 
         try {
