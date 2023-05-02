@@ -1,4 +1,8 @@
-package edu.virginia.cs.hw7;
+package edu.virginia.cs.hw7.data;
+
+import edu.virginia.cs.hw7.Course;
+import edu.virginia.cs.hw7.Review;
+import edu.virginia.cs.hw7.Student;
 
 import javax.swing.plaf.nimbus.State;
 import java.sql.*;
