@@ -32,16 +32,16 @@ public class DatabaseManager {
     }
 
     public void createTables() {
-        String sqlCreateStudents = "CREATE TABLE IF NOT EXISTS Students (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        String sqlCreateStudents = "CREATE TABLE IF NOT EXISTS Students (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                 "Name VARCHAR(255) NOT NULL, Password VARCHAR(255) NOT NULL)";
 
-        String sqlCreateCourses = "CREATE TABLE IF NOT EXISTS Courses (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        String sqlCreateCourses = "CREATE TABLE IF NOT EXISTS Courses (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                 "Department VARCHAR(4) NOT NULL, Catalog_Number INT(4) NOT NULL)";
 
-        String sqlCreateReviews = "CREATE TABLE IF NOT EXISTS Reviews (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        String sqlCreateReviews = "CREATE TABLE IF NOT EXISTS Reviews (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                 "StudentID INT(5) NOT NULL, CourseID INT(5) NOT NULL, Text VARCHAR(255) NOT NULL, " +
-                "Rating INT(1) NOT NULL, FOREIGN KEY (StudentID) REFERENCES Students(ID), " +
-                "FOREIGN KEY (CourseID) REFERENCES Courses(ID))";
+                "Rating INT(1) NOT NULL, FOREIGN KEY (StudentID) REFERENCES Students(ID) ON DELETE CASCADE, " +
+                "FOREIGN KEY (CourseID) REFERENCES Courses(ID) ON DELETE CASCADE)";
 
         try {
             if (connection.isClosed()) { throw new IllegalStateException("Manager has not connected yet."); }
