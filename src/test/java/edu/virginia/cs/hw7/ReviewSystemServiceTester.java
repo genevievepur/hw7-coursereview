@@ -231,9 +231,11 @@ public class ReviewSystemServiceTester {
     public void testAverageRating() {
         Course course = new Course("CS", 1110);
         List<Review> courseReviews = testService.getReviewsOfCourse(course);
-        double expected = (double)7/3;
-        System.out.println(expected);
-        assertEquals(expected, testService.averageRating(courseReviews), 0.1);
+
+        double expected = 2.33;
+        double actual = testService.averageRating(courseReviews);
+
+        assertEquals(expected, actual, 0.1);
     }
 
 

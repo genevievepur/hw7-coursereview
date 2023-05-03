@@ -112,10 +112,9 @@ public class ReviewSystemService {
                 .sum();
 
         int numOfRatings = courseReviews.size();
-        System.out.println(sumOfRatings);
-        System.out.println(numOfRatings);
 
         double average = (double)sumOfRatings/numOfRatings;
+        average = Math.floor(average * 100) / 100;
         return average;
     }
 }
