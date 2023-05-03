@@ -51,7 +51,7 @@ public class DatabaseTester {
         System.out.println("---- Amy's Reviews ----");
         for (int i = 0; i < amyReviews.size(); i++) {
             Review review = amyReviews.get(i);
-            System.out.println("Course: " + review.getCourse() + "- Review: " + review.getText() + "- Rating: " + review.getRating());
+            System.out.println("Course: " + review.getCourse().getCourseTitle() + " - Review: " + review.getText() + " - Rating: " + review.getRating());
         }
     }
 }
