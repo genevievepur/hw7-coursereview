@@ -28,7 +28,7 @@ public class ReviewSystemService {
 
     public boolean isPasswordEnteredCorrect(String name, String password) {
         if (doesNameExists(name)) {
-            Student student = dbManager.getStudentByName(name);
+            Student student = getStudentByName(name);
             return student.getPassword().equals(password);
         }
         return false;
@@ -102,7 +102,7 @@ public class ReviewSystemService {
         return true;
     }
 
-    public float averageRating (List<Review> courseReviews) {
+    public double averageRating (List<Review> courseReviews) {
         List<Integer> listOfRatings = courseReviews.stream()
                 .map(Review::getRating)
                 .collect(Collectors.toList());
@@ -112,8 +112,10 @@ public class ReviewSystemService {
                 .sum();
 
         int numOfRatings = courseReviews.size();
+        System.out.println(sumOfRatings);
+        System.out.println(numOfRatings);
 
-        float average = (float)sumOfRatings/numOfRatings;
+        double average = (double)sumOfRatings/numOfRatings;
         return average;
     }
 }

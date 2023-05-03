@@ -2,19 +2,21 @@ plugins {
     id 'java'
 }
 
-group 'org.example'
+group 'edu.virginia.cs.hw7'
 version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src']
-        }
-    }
-}
+
+//sourceSets {
+//    main {
+//        java {
+//            srcDirs = ['src']
+//        }
+//    }
+//}
+
 dependencies {
     implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.36.0.3'
 
