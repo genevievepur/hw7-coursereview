@@ -13,7 +13,11 @@ public class CommandLineInterface {
     private Scanner scanner;
 
     public CommandLineInterface() {
-        dbManager = new DatabaseManager();
+        this(new DatabaseManager("jdbc:sqlite:reviews.sqlite3"));
+    }
+
+    public CommandLineInterface(DatabaseManager dbManager) {
+        this.dbManager = dbManager;
         scanner = new Scanner(System.in);
     }
 
@@ -24,11 +28,11 @@ public class CommandLineInterface {
         mainLoop();
     }
 
-    private void displayWelcomeMessage() {
+    void displayWelcomeMessage() {
         System.out.println("Welcome to the Course Review System!");
     }
 
-    private void mainLoop() {
+    void mainLoop() {
         boolean running = true;
 
         while (running) {
@@ -59,7 +63,7 @@ public class CommandLineInterface {
         }
     }
 
-    private void displayMainMenu() {
+    void displayMainMenu() {
         System.out.println("\nMain Menu:");
         System.out.println("1. Login");
         System.out.println("2. Create user");
@@ -69,7 +73,7 @@ public class CommandLineInterface {
         System.out.print("Enter your choice: ");
     }
 
-    private int getIntegerInput() {
+    int getIntegerInput() {
         int input;
 
         try {
@@ -81,7 +85,7 @@ public class CommandLineInterface {
         return input;
     }
 
-    private void login() {
+    void login() {
         System.out.print("Enter your name: ");
         String name = scanner.nextLine();
         System.out.print("Enter your password: ");
@@ -99,7 +103,7 @@ public class CommandLineInterface {
         }
     }
 
-    private void createUser() {
+    void createUser() {
         System.out.print("Enter your name: ");
         String name = scanner.nextLine();
         System.out.print("Enter your password: ");
@@ -114,7 +118,7 @@ public class CommandLineInterface {
         }
     }
 
-    private void submitReview() {
+    void submitReview() {
         System.out.print("Enter your name: ");
         String name = scanner.nextLine();
 
@@ -145,7 +149,7 @@ public class CommandLineInterface {
         }
     }
 
-    private void viewCourseReviews() {
+    void viewCourseReviews() {
         System.out.print("Enter course department (e.g., CS): ");
         String department = scanner.nextLine();
         System.out.print("Enter course catalog number (e.g., 1111): ");

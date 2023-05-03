@@ -10,7 +10,7 @@ import java.util.List;
 public class DatabaseTester {
 
     public static void main(String[] args) {
-        DatabaseManager dbManager = new DatabaseManager();
+        DatabaseManager dbManager = new DatabaseManager("jdbc:sqlite:reviews.sqlite3");
         dbManager.connect();
         dbManager.deleteTables();
         dbManager.createTables();
