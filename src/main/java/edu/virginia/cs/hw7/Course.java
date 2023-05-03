@@ -11,4 +11,9 @@ public class Course {
     public String getDepartment() { return department; }
 
     public int getCatalogNumber() { return catalogNumber; }
+
+    public String getCourseTitle() {
+        String title = this.department + " " + this.catalogNumber;
+        return title;
+    }
 }

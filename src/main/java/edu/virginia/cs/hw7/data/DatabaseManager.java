@@ -230,6 +230,28 @@ public class DatabaseManager {
         return false;
     }
 
+    public Course getCourseByID(int courseID) {
+        Course course;
+        try {
+            if (connection.isClosed()) { throw new IllegalStateException("Manager has not connected yet."); }
+
+            Statement st = connection.createStatement();
+            String selectQuery = "SELECT * FROM Courses WHERE ID = " + courseID + ";";
+            ResultSet rs = st.executeQuery(selectQuery);
+
+            if (!rs.next()) {
+                throw new IllegalArgumentException("No such course exists in database.");
+            }
+
+            String department = rs.getString("Department");
+            int catalogNum = rs.getInt("Catalog_Number");
+            course = new Course(department, catalogNum);
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        }
+        return course;
+    }
+
     public void addReview(Review review) {
         Student student = review.getStudent();
         int studentID = getStudentID(student);
@@ -324,6 +346,38 @@ public class DatabaseManager {
             while (rs.next()) {
                 int studentID = rs.getInt("StudentID");
                 Student student = getStudentByID(studentID);
+                String text = rs.getString("Text");
+                int rating = rs.getInt("Rating");
+                Review review = new Review(student, course, text, rating);
+                reviews.add(review);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        }
+        return reviews;
+    }
+
+    public List<Review> getStudentReviews(Student student) {
+        List<Review> reviews = new ArrayList<>();
+        int studentID = getStudentID(student);
+        try {
+            if (connection.isClosed()) {
+                throw new IllegalStateException("Manager has not connected yet.");
+            }
+
+            Statement st = connection.createStatement();
+//            String selectQuery = String.format("""
+//                    SELECT * FROM Reviews WHERE CourseID = "%d";
+//                    """, courseID);
+
+            String selectQuery = "SELECT * FROM Reviews WHERE StudentID = " + studentID + ";";
+            ResultSet rs = st.executeQuery(selectQuery);
+
+            while (rs.next()) {
+                int courseID = rs.getInt("CourseID");
+                Course course = getCourseByID(courseID);
                 String text = rs.getString("Text");
                 int rating = rs.getInt("Rating");
                 Review review = new Review(student, course, text, rating);

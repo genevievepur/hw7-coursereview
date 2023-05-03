@@ -46,5 +46,12 @@ public class DatabaseTester {
             Review review = introReviews.get(i);
             System.out.println("Review: " + review.getText() + "- Rating: " + review.getRating());
         }
+
+        List<Review> amyReviews = dbManager.getStudentReviews(amy1);
+        System.out.println("---- Amy's Reviews ----");
+        for (int i = 0; i < amyReviews.size(); i++) {
+            Review review = amyReviews.get(i);
+            System.out.println("Course: " + review.getCourse().getCourseTitle() + " - Review: " + review.getText() + " - Rating: " + review.getRating());
+        }
     }
 }
