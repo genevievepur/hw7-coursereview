@@ -7,6 +7,7 @@ import edu.virginia.cs.hw7.data.DatabaseManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ReviewSystemService {
     DatabaseManager dbManager;
@@ -25,9 +26,38 @@ public class ReviewSystemService {
         return dbManager.getStudentByName(name);
     }
 
+    public boolean isPasswordEnteredCorrect(String name, String password) {
+        if (doesNameExists(name)) {
+            Student student = dbManager.getStudentByName(name);
+            return student.getPassword().equals(password);
+        }
+        return false;
+    }
+
+    public boolean doCreatedPasswordsMatch(String password, String passwordConfirm){
+        return passwordConfirm.equals(password);
+    }
+
     public void registerUser(String name, String password) {
         Student student = new Student(name, password);
         dbManager.addStudent(student);
+    }
+
+    public boolean isDepartmentValid(String department) {
+        if (department.length() >= 1 && department.length() <= 4) {
+            if (department.toUpperCase().equals(department)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isCatalogNumberValid (int catalogNum) {
+        String catNumString = Integer.toString(catalogNum);
+        if (catNumString.length() == 4) {
+            return true;
+        }
+        return false;
     }
 
     public boolean doesCourseExists(String department, int catalogNum) {
@@ -54,6 +84,10 @@ public class ReviewSystemService {
         return studentReviews;
     }
 
+    public boolean isRatingValid(int rating) {
+        return rating <= 5 && rating >= 1;
+    }
+
     public void addReview(Student student, Course course, String text, int rating) {
         Review review = new Review(student, course, text, rating);
         dbManager.addReview(review);
@@ -61,5 +95,25 @@ public class ReviewSystemService {
 
     public List<Review> getReviewsOfCourse(Course course) {
         return dbManager.getReviewsOfCourse(course);
+    }
+
+    public boolean doesCourseHaveReviews (List<Review> courseReviews) {
+        if (courseReviews.size() == 0) { return false; }
+        return true;
+    }
+
+    public float averageRating (List<Review> courseReviews) {
+        List<Integer> listOfRatings = courseReviews.stream()
+                .map(Review::getRating)
+                .collect(Collectors.toList());
+
+        int sumOfRatings = listOfRatings.stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+
+        int numOfRatings = courseReviews.size();
+
+        float average = (float)sumOfRatings/numOfRatings;
+        return average;
     }
 }
