@@ -54,9 +54,7 @@ public class ReviewSystemService {
 
     public boolean isCatalogNumberValid (int catalogNum) {
         String catNumString = Integer.toString(catalogNum);
-        if (catNumString.length() == 4) {
-            return true;
-        }
+        if (catNumString.length() == 4) { return true; }
         return false;
     }
 
@@ -70,8 +68,8 @@ public class ReviewSystemService {
 
     public boolean hasUserSubmittedCourseReviewAlready(Student user, Course course){
         List<Review> studentReviews = getStudentReviews(user);
-        for (int i = 0; i < studentReviews.size(); i++) {
-            Course reviewCourse = studentReviews.get(i).getCourse();
+        for (Review studentReview : studentReviews) {
+            Course reviewCourse = studentReview.getCourse();
             if (reviewCourse.getCourseTitle().equals(course.getCourseTitle())) {
                 return true;
             }
@@ -107,12 +105,16 @@ public class ReviewSystemService {
                 .map(Review::getRating)
                 .collect(Collectors.toList());
 
+        // URL: https://www.baeldung.com/java-stream-sum
+        // Description: Used the code in "4. Using IntStream.sum()" to sum the integers in the list (lines 110-112).
         int sumOfRatings = listOfRatings.stream()
                 .mapToInt(Integer::intValue)
                 .sum();
 
         int numOfRatings = courseReviews.size();
 
+        // URL: https://stackoverflow.com/questions/7747469/how-can-i-truncate-a-double-to-only-two-decimal-places-in-java
+        // Description: used the code in the first answer to truncate the double to two decimal places (line 119).
         double average = (double)sumOfRatings/numOfRatings;
         average = Math.floor(average * 100) / 100;
         return average;
