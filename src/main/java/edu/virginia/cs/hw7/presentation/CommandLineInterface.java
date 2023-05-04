@@ -126,14 +126,7 @@ public class CommandLineInterface {
         }
     }
 
-    private void submitReview(Student loggedInUser) {
-        if (loggedInUser == null) {
-            System.out.println("You must log in to submit a review.");
-            return;
-        }
 
-        System.out.print("Enter course department (e.g., CS): ");
-        String department = scanner.nextLine;
         private void submitReview(Student loggedInUser) {
             if (loggedInUser == null) {
                 System.out.println("You must log in to submit a review.");
@@ -153,7 +146,7 @@ public class CommandLineInterface {
             System.out.print("Enter your written review: ");
             String text = scanner.nextLine();
 
-            Course course = dbManager.getCourseByDepartmentAndNumber(department, number);
+            Course course = dbManager.getCourseByDepartmentAndCatalogNumber(department, number);
             if (course == null) {
                 System.out.println("No such course exists.");
                 return;
@@ -187,7 +180,7 @@ public class CommandLineInterface {
                 }
             }
         }
-    }
+
 
     public static void main(String[] args) {
         CommandLineInterface cli = new CommandLineInterface();
