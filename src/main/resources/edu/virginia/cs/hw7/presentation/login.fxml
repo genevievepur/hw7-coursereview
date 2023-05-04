@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #007AFF;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.cs.hw7.presentation.ReviewSystemController">
+   <left>
+      <AnchorPane prefHeight="400.0" prefWidth="228.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="561.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@hw7_ReviewSystem.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </left>
+   <right>
+      <AnchorPane prefHeight="400.0" prefWidth="292.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="34.0" layoutY="100.0" text="Username" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="36.0" layoutY="139.0" text="Password" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="username" layoutX="122.0" layoutY="98.0" promptText="Username" />
+            <PasswordField fx:id="password" layoutX="122.0" layoutY="137.0" promptText="Password" />
+            <Button fx:id="login" layoutX="119.0" layoutY="188.0" mnemonicParsing="false" style="-fx-background-color: #2335ff;" text="Log In" textFill="WHITE" />
+            <Label layoutX="61.0" layoutY="271.0" text="New user? Click here to register." textFill="WHITE" />
+            <Button fx:id="register" layoutX="114.0" layoutY="295.0" mnemonicParsing="false" style="-fx-background-color: #2335ff;" text="Register" textFill="WHITE" />
+            <Label fx:id="loginError" layoutX="145.0" layoutY="223.0" prefHeight="17.0" prefWidth="1.0" textFill="RED" />
+         </children>
+      </AnchorPane>
+   </right>
+</BorderPane>
