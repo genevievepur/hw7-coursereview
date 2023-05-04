@@ -12,7 +12,7 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="submitReview" layoutX="174.0" layoutY="104.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="253.0" style="-fx-background-color: #2335ff;" text="Submit review for course" textFill="#fffcfc">
+            <Button fx:id="submitReview" layoutX="174.0" layoutY="104.0" mnemonicParsing="false" onAction="#switchToSubmitReview" prefHeight="30.0" prefWidth="253.0" style="-fx-background-color: #2335ff;" text="Submit review for course" textFill="#fffcfc">
                <font>
                   <Font size="18.0" />
                </font>
