@@ -17,7 +17,7 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button fx:id="seeReviews" layoutX="174.0" layoutY="182.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="253.0" style="-fx-background-color: #2335ff;" text="See reviews for course" textFill="#fffcfc">
+            <Button fx:id="seeReviews" layoutX="174.0" layoutY="182.0" mnemonicParsing="false" onAction="#switchToSeeReviews" prefHeight="30.0" prefWidth="253.0" style="-fx-background-color: #2335ff;" text="See reviews for course" textFill="#fffcfc">
                <font>
                   <Font size="18.0" />
                </font>

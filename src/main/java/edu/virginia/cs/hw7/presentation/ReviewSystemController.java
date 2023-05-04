@@ -1,6 +1,7 @@
 package edu.virginia.cs.hw7.presentation;
 
 import edu.virginia.cs.hw7.Course;
+import edu.virginia.cs.hw7.Review;
 import edu.virginia.cs.hw7.Student;
 import edu.virginia.cs.hw7.business.ReviewSystemService;
 import edu.virginia.cs.hw7.business.UserSingleton;
@@ -13,10 +14,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ReviewSystemController implements Initializable {
@@ -73,6 +78,12 @@ public class ReviewSystemController implements Initializable {
     private Label emptyError;
     @FXML
     private Button submit;
+
+    // FXMLs for See Reviews
+    @FXML
+    VBox displayBox;
+    @FXML
+    Label errorOrRating;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -171,6 +182,11 @@ public class ReviewSystemController implements Initializable {
         goBackToLogIn(event);
     }
 
+    public void switchToSeeReviews(ActionEvent event) throws IOException {
+        String fxml = "see-reviews.fxml";
+        switchScenes(event, fxml);
+    }
+
     // -------------------------- METHODS FOR SUBMIT REVIEW --------------------------
 
     public void submitButtonPressed(ActionEvent event) {
@@ -255,6 +271,76 @@ public class ReviewSystemController implements Initializable {
                 service.addReview(currentUser, course, text, rating);
             }
         }
+    }
+
+    // -------------------------- METHODS FOR SEEING REVIEWS --------------------------
+
+    public void seeReviewsButtonPressed(ActionEvent event) {
+        departmentError.setText("");
+        catNumError.setText("");
+        errorOrRating.setText("");
+        displayBox.getChildren().clear();
+
+        String departmentEntered = department.getText();
+        String catNumString = catalogNum.getText();
+
+        int catNumEntered = -1;
+        try {
+            catNumEntered = Integer.parseInt(catNumString);
+        } catch (NumberFormatException e) {
+            catNumError.setText("Please enter a number");
+        }
+
+        if (isValidDepartment(departmentEntered) && isValidCatalogNumber(catNumEntered)) {
+            displayReviews(departmentEntered, catNumEntered);
+        }
+    }
+
+    private void displayReviews(String department, int catalogNum){
+        Course course = new Course(department, catalogNum);
+
+        if (service.doesCourseExists(department, catalogNum)) {
+            List<Review> courseReviews = service.getReviewsOfCourse(course);
+            if (service.doesCourseHaveReviews(courseReviews)) {
+                setAverageRatingLabel(courseReviews);
+                addReviewLabels(courseReviews);
+            } else {
+                setErrorLabel();
+            }
+        } else {
+            setErrorLabel();
+        }
+    }
+
+    private void setErrorLabel() {
+        errorOrRating.setTextFill(Color.RED);
+        errorOrRating.setFont(new Font("System", 12));
+        errorOrRating.setText("Sorry! This course does not have any reviews.");
+    }
+
+    private void setAverageRatingLabel(List<Review> courseReviews) {
+        double avgRating = service.averageRating(courseReviews);
+        String avgRatingText = "Average Rating = " + avgRating + "/5";
+        errorOrRating.setText(avgRatingText);
+        errorOrRating.setFont(new Font("System", 16));
+        errorOrRating.setTextFill(Color.WHITE);
+    }
+
+    private void addReviewLabels(List<Review> courseReviews) {
+        for (Review review : courseReviews) {
+            String reviewText = getReviewString(review);
+            Label toAdd = new Label(reviewText);
+            toAdd.setTextFill(Color.WHITE);
+            toAdd.setFont(new Font("System", 15));
+            displayBox.getChildren().add(toAdd);
+        }
+    }
+
+    private String getReviewString(Review review) {
+        int rating = review.getRating();
+        String text = review.getText();
+        String description = rating + "/5 - " + text;
+        return description;
     }
 
 }

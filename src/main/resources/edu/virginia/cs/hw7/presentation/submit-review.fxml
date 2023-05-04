@@ -29,40 +29,45 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="16.0" layoutY="25.0" text="Enter a department:" textFill="WHITE">
+            <Label layoutX="14.0" layoutY="47.0" text="Enter a department:" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="department" layoutX="184.0" layoutY="22.0" promptText="e.g. CS" />
-            <Label layoutX="12.0" layoutY="68.0" text="Enter a catalog number:" textFill="WHITE">
+            <TextField fx:id="department" layoutX="184.0" layoutY="44.0" promptText="e.g. CS" />
+            <Label layoutX="13.0" layoutY="85.0" text="Enter a catalog number:" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="catalogNum" layoutX="184.0" layoutY="65.0" promptText="e.g. 3140" />
-            <Label layoutX="14.0" layoutY="112.0" text="Rating:" textFill="WHITE">
+            <TextField fx:id="catalogNum" layoutX="184.0" layoutY="85.0" promptText="e.g. 3140" />
+            <Label layoutX="13.0" layoutY="125.0" text="Rating:" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="rating" layoutX="82.0" layoutY="110.0" prefHeight="25.0" prefWidth="81.0" promptText="Number 1-5" />
-            <Label layoutX="12.0" layoutY="153.0" text="Review:" textFill="WHITE">
+            <TextField fx:id="rating" layoutX="82.0" layoutY="123.0" prefHeight="25.0" prefWidth="81.0" promptText="Number 1-5" />
+            <Label layoutX="13.0" layoutY="163.0" text="Review:" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="reviewText" alignment="TOP_LEFT" layoutX="82.0" layoutY="153.0" prefHeight="83.0" prefWidth="499.0" />
-            <Button fx:id="submit" layoutX="268.0" layoutY="264.0" mnemonicParsing="false" onAction="#submitButtonPressed" style="-fx-background-color: #2335ff;" text="Submit" textFill="WHITE">
+            <TextField fx:id="reviewText" alignment="TOP_LEFT" layoutX="82.0" layoutY="163.0" prefHeight="83.0" prefWidth="499.0" />
+            <Button fx:id="submit" layoutX="269.0" layoutY="273.0" mnemonicParsing="false" onAction="#submitButtonPressed" style="-fx-background-color: #2335ff;" text="Submit" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Label fx:id="departmentError" layoutX="350.0" layoutY="27.0" textFill="RED" />
-            <Label fx:id="catNumError" layoutX="350.0" layoutY="70.0" textFill="RED" />
-            <Label fx:id="ratingError" layoutX="178.0" layoutY="114.0" textFill="RED" />
-            <Label fx:id="textError" alignment="CENTER" contentDisplay="CENTER" layoutX="217.0" layoutY="236.0" prefHeight="17.0" prefWidth="231.0" textAlignment="CENTER" textFill="RED" />
-            <Label fx:id="emptyError" alignment="CENTER" contentDisplay="CENTER" layoutX="120.0" layoutY="294.0" prefHeight="17.0" prefWidth="360.0" textAlignment="CENTER" textFill="RED" />
+            <Label fx:id="departmentError" layoutX="350.0" layoutY="44.0" textFill="RED" />
+            <Label fx:id="catNumError" layoutX="350.0" layoutY="85.0" textFill="RED" />
+            <Label fx:id="ratingError" layoutX="178.0" layoutY="123.0" textFill="RED" />
+            <Label fx:id="textError" alignment="CENTER" contentDisplay="CENTER" layoutX="218.0" layoutY="250.0" prefHeight="17.0" prefWidth="231.0" textAlignment="CENTER" textFill="RED" />
+            <Label fx:id="emptyError" alignment="CENTER" contentDisplay="CENTER" layoutX="120.0" layoutY="303.0" prefHeight="17.0" prefWidth="360.0" textAlignment="CENTER" textFill="RED" />
+            <Label layoutX="230.0" layoutY="1.0" text="Submit a Review" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </center>
