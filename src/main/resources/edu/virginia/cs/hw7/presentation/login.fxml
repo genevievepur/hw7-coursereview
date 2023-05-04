@@ -37,10 +37,10 @@
             </Label>
             <TextField fx:id="username" layoutX="122.0" layoutY="98.0" promptText="Username" />
             <PasswordField fx:id="password" layoutX="122.0" layoutY="137.0" promptText="Password" />
-            <Button fx:id="login" layoutX="119.0" layoutY="188.0" mnemonicParsing="false" style="-fx-background-color: #2335ff;" text="Log In" textFill="WHITE" />
+            <Button fx:id="login" layoutX="119.0" layoutY="188.0" mnemonicParsing="false" onAction="#userLogin" style="-fx-background-color: #2335ff;" text="Log In" textFill="WHITE" />
             <Label layoutX="61.0" layoutY="271.0" text="New user? Click here to register." textFill="WHITE" />
             <Button fx:id="register" layoutX="114.0" layoutY="295.0" mnemonicParsing="false" style="-fx-background-color: #2335ff;" text="Register" textFill="WHITE" />
-            <Label fx:id="loginError" layoutX="145.0" layoutY="223.0" prefHeight="17.0" prefWidth="1.0" textFill="RED" />
+            <Label fx:id="loginError" alignment="CENTER" layoutX="31.0" layoutY="227.0" prefHeight="17.0" prefWidth="231.0" textAlignment="CENTER" textFill="RED" />
          </children>
       </AnchorPane>
    </right>
