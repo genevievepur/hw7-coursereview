@@ -18,6 +18,11 @@
                   <Image url="@logo_horizontal.jpg" />
                </image>
             </ImageView>
+            <Button layoutX="424.0" layoutY="22.0" mnemonicParsing="false" onAction="#switchToMainMenu" style="-fx-background-color: #2335ff;" text="Back to Main Menu" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </top>
@@ -47,8 +52,8 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="reviewText" layoutX="82.0" layoutY="153.0" prefHeight="83.0" prefWidth="499.0" />
-            <Button fx:id="submit" layoutX="269.0" layoutY="255.0" mnemonicParsing="false" onAction="#submitButtonPressed" style="-fx-background-color: #2335ff;" text="Submit" textFill="WHITE">
+            <TextField fx:id="reviewText" alignment="TOP_LEFT" layoutX="82.0" layoutY="153.0" prefHeight="83.0" prefWidth="499.0" />
+            <Button fx:id="submit" layoutX="268.0" layoutY="264.0" mnemonicParsing="false" onAction="#submitButtonPressed" style="-fx-background-color: #2335ff;" text="Submit" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
@@ -56,6 +61,7 @@
             <Label fx:id="departmentError" layoutX="350.0" layoutY="27.0" textFill="RED" />
             <Label fx:id="catNumError" layoutX="350.0" layoutY="70.0" textFill="RED" />
             <Label fx:id="ratingError" layoutX="178.0" layoutY="114.0" textFill="RED" />
+            <Label fx:id="textError" alignment="CENTER" contentDisplay="CENTER" layoutX="217.0" layoutY="236.0" prefHeight="17.0" prefWidth="231.0" textAlignment="CENTER" textFill="RED" />
             <Label fx:id="emptyError" alignment="CENTER" contentDisplay="CENTER" layoutX="120.0" layoutY="294.0" prefHeight="17.0" prefWidth="360.0" textAlignment="CENTER" textFill="RED" />
          </children>
       </AnchorPane>

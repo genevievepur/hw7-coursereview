@@ -11,11 +11,14 @@ import java.util.stream.Collectors;
 
 public class ReviewSystemService {
     DatabaseManager dbManager;
+    UserSingleton userSingleton = UserSingleton.getInstance();
 
     public void initialize() {
-        dbManager = new DatabaseManager();
-        dbManager.connect();
-        dbManager.createTables();
+        if (userSingleton.getDbManager() == null) {
+            userSingleton.setDbManager(new DatabaseManager());
+            userSingleton.getDbManager().connect();
+        }
+        dbManager = userSingleton.getDbManager();
     }
 
     public boolean doesNameExists(String name) {

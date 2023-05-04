@@ -68,14 +68,19 @@ public class ReviewSystemController implements Initializable {
     @FXML
     private Label ratingError;
     @FXML
+    private Label textError;
+    @FXML
     private Label emptyError;
     @FXML
     private Button submit;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        service = new ReviewSystemService();
-        service.initialize();
+        if (userSingleton.getService() == null) {
+            userSingleton.setService(new ReviewSystemService());
+            userSingleton.getService().initialize();
+        }
+        service = userSingleton.getService();
     }
 
     public void switchScenes(ActionEvent event, String fxml) throws IOException {
@@ -134,8 +139,12 @@ public class ReviewSystemController implements Initializable {
     }
 
     private void checkRegister(ActionEvent event, String newUser, String newPassword, String confirmNewPassword) throws IOException {
-        if (service.doesNameExists(newUser)) {
+        if (newUser.equals("")) {
+            registerError.setText("Please enter a username");
+        } else if (service.doesNameExists(newUser)) {
             registerError.setText("Username already taken");
+        } else if (newPassword.equals("") || confirmNewPassword.equals("")) {
+            registerError.setText("Please enter a password and confirm it");
         } else if (!service.doCreatedPasswordsMatch(newPassword, confirmNewPassword)) {
             registerError.setText("Passwords do not match");
         } else {
@@ -165,6 +174,11 @@ public class ReviewSystemController implements Initializable {
     // -------------------------- METHODS FOR SUBMIT REVIEW --------------------------
 
     public void submitButtonPressed(ActionEvent event) {
+        departmentError.setText("");
+        catNumError.setText("");
+        ratingError.setText("");
+        textError.setText("");
+
         String departmentEntered = department.getText();
         String catNumString = catalogNum.getText();
         String ratingString = rating.getText();
@@ -184,7 +198,8 @@ public class ReviewSystemController implements Initializable {
             ratingError.setText("Please enter a number");
         }
 
-        if (isValidDepartment(departmentEntered) && isValidCatalogNumber(catNumEntered) && isValidRating(ratingEntered)) {
+        if (isValidDepartment(departmentEntered) && isValidCatalogNumber(catNumEntered)
+                && isValidRating(ratingEntered) && isValidText(reviewTextEntered)) {
             submitReview(departmentEntered, catNumEntered, reviewTextEntered, ratingEntered);
         }
     }
@@ -217,6 +232,14 @@ public class ReviewSystemController implements Initializable {
         return true;
     }
 
+    private boolean isValidText(String text) {
+        if (text.equals("")) {
+            textError.setText("Please write a review");
+            return false;
+        }
+        return true;
+    }
+
     private void submitReview(String department, int catNum, String text, int rating) {
         Course course = new Course(department, catNum);
         Student currentUser = userSingleton.getCurrentUser();
@@ -228,8 +251,8 @@ public class ReviewSystemController implements Initializable {
             if (service.hasUserSubmittedCourseReviewAlready(currentUser, course)) {
                 emptyError.setText("You have already reviewed this course.");
             } else {
-                service.addReview(currentUser, course, text, rating);
                 emptyError.setText("Review submitted!");
+                service.addReview(currentUser, course, text, rating);
             }
         }
     }
