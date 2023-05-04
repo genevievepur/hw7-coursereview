@@ -78,6 +78,16 @@ public class ReviewSystemController implements Initializable {
         service.initialize();
     }
 
+    public void switchScenes(ActionEvent event, String fxml) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(ReviewSystemApplication.class.getResource(fxml));
+        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    // -------------------------- METHODS FOR LOGIN --------------------------
+
     public void userLogin(ActionEvent actionEvent) throws IOException {
         checkLogin(actionEvent);
     }
@@ -104,6 +114,8 @@ public class ReviewSystemController implements Initializable {
         switchScenes(event, fxml);
     }
 
+    // -------------------------- METHODS FOR REGISTER --------------------------
+
     public void userRegister(ActionEvent event) throws IOException {
         String newName = username.getText();
         String newPassword = password.getText();
@@ -129,6 +141,8 @@ public class ReviewSystemController implements Initializable {
         }
     }
 
+    // -------------------------- METHODS FOR MAIN MENU --------------------------
+
     public void switchToMainMenu(ActionEvent event) throws IOException {
         String fxml = "main-menu.fxml";
         switchScenes(event, fxml);
@@ -139,13 +153,11 @@ public class ReviewSystemController implements Initializable {
         switchScenes(event, fxml);
     }
 
-    public void switchScenes(ActionEvent event, String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(ReviewSystemApplication.class.getResource(fxml));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
+    public void logOutPressed(ActionEvent event) {
+
     }
+
+    // -------------------------- METHODS FOR SUBMIT REVIEW --------------------------
 
     public void submitButtonPressed(ActionEvent event) {
         String departmentEntered = department.getText();

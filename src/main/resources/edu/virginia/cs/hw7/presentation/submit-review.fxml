@@ -18,6 +18,11 @@
                   <Image url="@logo_horizontal.jpg" />
                </image>
             </ImageView>
+            <Button layoutX="431.0" layoutY="23.0" mnemonicParsing="false" onAction="#switchToMainMenu" style="-fx-background-color: #2335ff;" text="Back to Main Menu" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </top>
