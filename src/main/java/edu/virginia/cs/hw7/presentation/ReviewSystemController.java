@@ -1,5 +1,6 @@
 package edu.virginia.cs.hw7.presentation;
 
+import edu.virginia.cs.hw7.Course;
 import edu.virginia.cs.hw7.Student;
 import edu.virginia.cs.hw7.business.ReviewSystemService;
 import javafx.fxml.FXML;
@@ -20,6 +21,8 @@ import java.util.ResourceBundle;
 public class ReviewSystemController implements Initializable {
     Student currentUser;
     ReviewSystemService service;
+
+    // FXMLs for Log In
     @FXML
     private TextField username;
     @FXML
@@ -30,6 +33,8 @@ public class ReviewSystemController implements Initializable {
     private Button register;
     @FXML
     private Label loginError;
+
+    // FXMLs for Main Menu
     @FXML
     private Label welcomeText;
     @FXML
@@ -38,6 +43,26 @@ public class ReviewSystemController implements Initializable {
     private Button submitReview;
     @FXML
     private Button seeReviews;
+
+    // FXMLs for Submit Review
+    @FXML
+    private TextField department;
+    @FXML
+    private TextField catalogNum;
+    @FXML
+    private TextField rating;
+    @FXML
+    private TextField reviewText;
+    @FXML
+    private Label departmentError;
+    @FXML
+    private Label catNumError;
+    @FXML
+    private Label ratingError;
+    @FXML
+    private Label emptyError;
+    @FXML
+    private Button submit;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -55,9 +80,10 @@ public class ReviewSystemController implements Initializable {
         if (service.doesNameExists(name)) {
             Student student = service.getStudentByName(name);
             if (service.isPasswordEnteredCorrect(name, enteredPassword)) {
-                currentUser = student;
+                this.currentUser = student;
+                System.out.println(currentUser.getName());
                 loginError.setText("Login successful!");
-                switchToMainMenu(event);
+                switchToMainMenu(event, currentUser);
             } else {
                 loginError.setText("Incorrect username or password.");
             }
@@ -66,11 +92,95 @@ public class ReviewSystemController implements Initializable {
         }
     }
 
-    public void switchToMainMenu(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(ReviewSystemApplication.class.getResource("main-menu.fxml"));
+    public void switchToMainMenu(ActionEvent event, Student user) throws IOException {
+        System.out.println(currentUser.getName());
+        String fxml = "main-menu.fxml";
+        switchScenes(event, fxml, user);
+    }
+
+    public void switchToSubmitReview(ActionEvent event) throws IOException {
+        String fxml = "submit-review.fxml";
+        switchScenes(event, fxml, this.currentUser);
+    }
+
+    public void switchScenes(ActionEvent event, String fxml, Student user) throws IOException {
+        this.currentUser = user;
+        System.out.println(currentUser.getName());
+        FXMLLoader fxmlLoader = new FXMLLoader(ReviewSystemApplication.class.getResource(fxml));
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.show();
     }
+
+    public void submitButtonPressed(ActionEvent event) {
+        System.out.println(currentUser.getName());
+        String departmentEntered = department.getText();
+        String catNumString = catalogNum.getText();
+        String ratingString = rating.getText();
+        String reviewTextEntered = reviewText.getText();
+
+        int catNumEntered = -1;
+        try {
+            catNumEntered = Integer.parseInt(catNumString);
+        } catch (NumberFormatException e) {
+            catNumError.setText("Please enter a number");
+        }
+
+        int ratingEntered = -1;
+        try {
+            ratingEntered = Integer.parseInt(ratingString);
+        } catch (NumberFormatException e) {
+            ratingError.setText("Please enter a number");
+        }
+
+        if (isValidDepartment(departmentEntered) && isValidCatalogNumber(catNumEntered) && isValidRating(ratingEntered)) {
+            submitReview(departmentEntered, catNumEntered, reviewTextEntered, ratingEntered);
+        }
+    }
+
+    private boolean isValidDepartment(String department) {
+        if (!service.isDepartmentValid(department)) {
+            departmentError.setText("Invalid department");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isValidCatalogNumber(int catalogNum) {
+        if (!service.isCatalogNumberValid(catalogNum)) {
+            if (!catNumError.getText().equals("Please enter a number")) {
+                catNumError.setText("Invalid catalog number");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isValidRating(int rating) {
+        if (!service.isRatingValid(rating)) {
+            if (!ratingError.getText().equals("Please enter a number")) {
+                ratingError.setText("Please enter number 1-5");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void submitReview(String department, int catNum, String text, int rating) {
+        Course course = new Course(department, catNum);
+
+        if (!service.doesCourseExists(department, catNum)) {
+            service.addCourse(course);
+            service.addReview(this.currentUser, course, text, rating);
+        } else {
+            if (service.hasUserSubmittedCourseReviewAlready(currentUser, course)) {
+                emptyError.setText("You have already reviewed this course.");
+            } else {
+                service.addReview(currentUser, course, text, rating);
+                emptyError.setText("Review submitted!");
+            }
+        }
+    }
+
 }
