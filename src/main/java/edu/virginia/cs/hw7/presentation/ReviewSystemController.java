@@ -3,6 +3,7 @@ package edu.virginia.cs.hw7.presentation;
 import edu.virginia.cs.hw7.Course;
 import edu.virginia.cs.hw7.Student;
 import edu.virginia.cs.hw7.business.ReviewSystemService;
+import edu.virginia.cs.hw7.business.UserSingleton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,8 +20,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ReviewSystemController implements Initializable {
-    Student currentUser;
+    //Student currentUser;
     ReviewSystemService service;
+    UserSingleton userSingleton = UserSingleton.getInstance();
 
     // FXMLs for Log In
     @FXML
@@ -80,10 +82,9 @@ public class ReviewSystemController implements Initializable {
         if (service.doesNameExists(name)) {
             Student student = service.getStudentByName(name);
             if (service.isPasswordEnteredCorrect(name, enteredPassword)) {
-                this.currentUser = student;
-                System.out.println(currentUser.getName());
+                userSingleton.setCurrentUser(student);
                 loginError.setText("Login successful!");
-                switchToMainMenu(event, currentUser);
+                switchToMainMenu(event);
             } else {
                 loginError.setText("Incorrect username or password.");
             }
@@ -92,20 +93,17 @@ public class ReviewSystemController implements Initializable {
         }
     }
 
-    public void switchToMainMenu(ActionEvent event, Student user) throws IOException {
-        System.out.println(currentUser.getName());
+    public void switchToMainMenu(ActionEvent event) throws IOException {
         String fxml = "main-menu.fxml";
-        switchScenes(event, fxml, user);
+        switchScenes(event, fxml);
     }
 
     public void switchToSubmitReview(ActionEvent event) throws IOException {
         String fxml = "submit-review.fxml";
-        switchScenes(event, fxml, this.currentUser);
+        switchScenes(event, fxml);
     }
 
-    public void switchScenes(ActionEvent event, String fxml, Student user) throws IOException {
-        this.currentUser = user;
-        System.out.println(currentUser.getName());
+    public void switchScenes(ActionEvent event, String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(ReviewSystemApplication.class.getResource(fxml));
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -114,7 +112,6 @@ public class ReviewSystemController implements Initializable {
     }
 
     public void submitButtonPressed(ActionEvent event) {
-        System.out.println(currentUser.getName());
         String departmentEntered = department.getText();
         String catNumString = catalogNum.getText();
         String ratingString = rating.getText();
@@ -169,10 +166,11 @@ public class ReviewSystemController implements Initializable {
 
     private void submitReview(String department, int catNum, String text, int rating) {
         Course course = new Course(department, catNum);
+        Student currentUser = userSingleton.getCurrentUser();
 
         if (!service.doesCourseExists(department, catNum)) {
             service.addCourse(course);
-            service.addReview(this.currentUser, course, text, rating);
+            service.addReview(currentUser, course, text, rating);
         } else {
             if (service.hasUserSubmittedCourseReviewAlready(currentUser, course)) {
                 emptyError.setText("You have already reviewed this course.");
