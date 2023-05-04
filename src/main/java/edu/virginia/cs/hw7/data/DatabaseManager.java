@@ -328,55 +328,42 @@ public class DatabaseManager {
 
 
         String insertQuery = String.format("""
-               INSERT INTO Reviews (StudentID, CourseID, Text, Rating)
-               VALUES ("%d", "%d", "%s", "%d");
-               """, studentID, courseID, review.getText(), review.getRating());
+                INSERT INTO Reviews (StudentID, CourseID, Text, Rating)
+                VALUES ("%d", "%d", "%s", "%d");
+                """, studentID, courseID, review.getText(), review.getRating());
 
 
-        try {
-            if (connection.isClosed()) { throw new IllegalStateException("Manager has not connected yet."); }
-
-
-            Statement st = connection.createStatement();
-            st.execute(insertQuery);
-            st.close();
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(insertQuery);
         } catch (SQLException e) {
             throw new IllegalStateException(e);
         }
     }
 
 
-    public int getStudentID(Student student) {
-        String name = student.getName();
-        // String password = student.getPassword();
+    public int getStudentID(Student student) throws SQLException {
         int studentID;
 
-
         try {
-            if (connection.isClosed()) { throw new IllegalStateException("Manager has not connected yet."); }
+             PreparedStatement statement = connection.prepareStatement("SELECT ID FROM Students WHERE Name = ?")) {
 
+            statement.setString(1, student.getName());
 
-            Statement st = connection.createStatement();
-            String selectQuery = String.format("""
-                   SELECT * FROM Students WHERE Name = "%s";
-                   """, name);
-            ResultSet rs = st.executeQuery(selectQuery);
-
+            ResultSet rs = statement.executeQuery();
 
             if (!rs.next()) {
                 throw new IllegalArgumentException("No such student exists in database.");
             }
 
-
             studentID = rs.getInt("ID");
 
-
         } catch (SQLException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException("Error when trying to retrieve student ID from the database", e);
         }
+
         return studentID;
     }
-
+    }
 
     public int getCourseID(Course course) {
         String department = course.getDepartment();
@@ -534,29 +521,21 @@ public class DatabaseManager {
     }
 
 
-    public Course getCourseByDepartmentAndCatalogNumber(String department, int catalogNumber) {
-        Course course;
-        try {
-            if (connection.isClosed()) { throw new IllegalStateException("Manager has not connected yet."); }
-
-
-            Statement st = connection.createStatement();
+    public Course getCourse(String department, int catalogNumber) {
+        try (Statement st = connection.createStatement()) {
             String selectQuery = String.format("""
                SELECT * FROM Courses WHERE Department = "%s" AND Catalog_Number = "%d";
                """, department, catalogNumber);
             ResultSet rs = st.executeQuery(selectQuery);
 
-
             if (!rs.next()) {
                 throw new IllegalArgumentException("No such course exists in database.");
             }
 
-
-            course = new Course(department, catalogNumber);
+            return new Course(department, catalogNumber);
         } catch (SQLException e) {
             throw new IllegalStateException(e);
         }
-        return course;
     }
 
 
