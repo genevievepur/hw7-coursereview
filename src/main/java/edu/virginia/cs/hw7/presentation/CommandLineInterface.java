@@ -42,37 +42,40 @@ public class CommandLineInterface {
 
     void mainLoop() {
         boolean running = true;
-
+        Student loggedInUser = null;
 
         while (running) {
-            displayMainMenu();
+            if (loggedInUser == null) {
+                loggedInUser = login();
+            } else {
+                displayMainMenu();
 
+                int choice = getIntegerInput();
 
-            int choice = getIntegerInput();
-
-
-            switch (choice) {
-                case 1:
-                    login();
-                    break;
-                case 2:
-                    createUser();
-                    break;
-                case 3:
-                    submitReview();
-                    break;
-                case 4:
-                    viewCourseReviews();
-                    break;
-                case 5:
-                    System.out.println("Goodbye!");
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Invalid choice, please try again.");
+                switch (choice) {
+                    case 1:
+                        loggedInUser = login();
+                        break;
+                    case 2:
+                        createUser();
+                        break;
+                    case 3:
+                        submitReview(loggedInUser);
+                        break;
+                    case 4:
+                        viewCourseReviews();
+                        break;
+                    case 5:
+                        System.out.println("Goodbye!");
+                        running = false;
+                        break;
+                    default:
+                        System.out.println("Invalid choice, please try again.");
+                }
             }
         }
     }
+
 
 
     void displayMainMenu() {
@@ -101,23 +104,24 @@ public class CommandLineInterface {
     }
 
 
-    void login() {
+    public Student login() {
         System.out.print("Enter your name: ");
         String name = scanner.nextLine();
         System.out.print("Enter your password: ");
         String password = scanner.nextLine();
 
-
         if (dbManager.doesNameExist(name)) {
             Student student = dbManager.getStudentByName(name);
             if (student.getPassword().equals(password)) {
                 System.out.println("Login successful!");
+                return student;
             } else {
                 System.out.println("Incorrect password!");
             }
         } else {
             System.out.println("No such user exists.");
         }
+        return null;
     }
 
 
@@ -138,40 +142,44 @@ public class CommandLineInterface {
     }
 
 
-    void submitReview() {
-        System.out.print("Enter your name: ");
-        String name = scanner.nextLine();
+    void submitReview(Student loggedInUser) {
+        if (loggedInUser != null) {
+            System.out.print("Enter your name: ");
+            String name = scanner.nextLine();
 
 
-        if (dbManager.doesNameExist(name)) {
-            Student student = dbManager.getStudentByName(name);
+            if (dbManager.doesNameExist(name)) {
+                Student student = dbManager.getStudentByName(name);
 
 
-            System.out.print("Enter course department (e.g., CS): ");
-            String department = scanner.nextLine();
-            System.out.print("Enter course catalog number (e.g., 1111): ");
-            int catalogNum = getIntegerInput();
+                System.out.print("Enter course department (e.g., CS): ");
+                String department = scanner.nextLine();
+                System.out.print("Enter course catalog number (e.g., 1111): ");
+                int catalogNum = getIntegerInput();
 
 
-            Course course = new Course(department, catalogNum);
-            if (!dbManager.doesCourseExist(department, catalogNum)) {
-                dbManager.addCourse(course);
+                Course course = new Course(department, catalogNum);
+                if (!dbManager.doesCourseExist(department, catalogNum)) {
+                    dbManager.addCourse(course);
+                }
+
+
+                System.out.print("Enter your review: ");
+                String reviewText = scanner.nextLine();
+                System.out.print("Enter your rating (1-5): ");
+                int rating = getIntegerInput();
+
+
+                Review review = new Review(student, course, reviewText, rating);
+                dbManager.addReview(review);
+
+
+                System.out.println("Review submitted successfully!");
+            } else {
+                System.out.println("User not found. Please create an account first.");
             }
-
-
-            System.out.print("Enter your review: ");
-            String reviewText = scanner.nextLine();
-            System.out.print("Enter your rating (1-5): ");
-            int rating = getIntegerInput();
-
-
-            Review review = new Review(student, course, reviewText, rating);
-            dbManager.addReview(review);
-
-
-            System.out.println("Review submitted successfully!");
         } else {
-            System.out.println("User not found. Please create an account first.");
+            System.out.println("You must log in to submit a review.");
         }
     }
 
@@ -206,9 +214,6 @@ public class CommandLineInterface {
             System.out.println("No such course exists in the database.");
         }
     }
-
-
-
 
     public static void main(String[] args) {
         CommandLineInterface cli = new CommandLineInterface();

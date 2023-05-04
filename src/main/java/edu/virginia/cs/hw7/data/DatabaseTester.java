@@ -14,7 +14,7 @@ public class DatabaseTester {
 
 
     public static void main(String[] args) {
-        DatabaseManager dbManager = new DatabaseManager("jdbc:sqlite:reviews.sqlite3");
+        DatabaseManager dbManager = new DatabaseManager();
         dbManager.connect();
         dbManager.deleteTables();
         dbManager.createTables();
