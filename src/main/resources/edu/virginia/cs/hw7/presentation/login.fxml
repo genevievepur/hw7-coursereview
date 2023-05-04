@@ -25,12 +25,12 @@
    <right>
       <AnchorPane prefHeight="400.0" prefWidth="292.0" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="34.0" layoutY="100.0" text="Username" textFill="WHITE">
+            <Label layoutX="34.0" layoutY="100.0" text="Username:" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label layoutX="36.0" layoutY="139.0" text="Password" textFill="WHITE">
+            <Label layoutX="36.0" layoutY="139.0" text="Password:" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -39,7 +39,7 @@
             <PasswordField fx:id="password" layoutX="122.0" layoutY="137.0" promptText="Password" />
             <Button fx:id="login" layoutX="119.0" layoutY="188.0" mnemonicParsing="false" onAction="#userLogin" style="-fx-background-color: #2335ff;" text="Log In" textFill="WHITE" />
             <Label layoutX="61.0" layoutY="271.0" text="New user? Click here to register." textFill="WHITE" />
-            <Button fx:id="register" layoutX="114.0" layoutY="295.0" mnemonicParsing="false" style="-fx-background-color: #2335ff;" text="Register" textFill="WHITE" />
+            <Button fx:id="register" layoutX="114.0" layoutY="295.0" mnemonicParsing="false" onAction="#switchToRegister" style="-fx-background-color: #2335ff;" text="Register" textFill="WHITE" />
             <Label fx:id="loginError" alignment="CENTER" layoutX="31.0" layoutY="227.0" prefHeight="17.0" prefWidth="231.0" textAlignment="CENTER" textFill="RED" />
          </children>
       </AnchorPane>

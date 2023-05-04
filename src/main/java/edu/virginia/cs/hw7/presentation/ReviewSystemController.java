@@ -35,6 +35,12 @@ public class ReviewSystemController implements Initializable {
     private Button register;
     @FXML
     private Label loginError;
+    @FXML
+    private TextField confirmPassword;
+    @FXML
+    private Label registerError;
+    @FXML
+    private Button backToLogin;
 
     // FXMLs for Main Menu
     @FXML
@@ -90,6 +96,36 @@ public class ReviewSystemController implements Initializable {
             }
         } else {
             loginError.setText("Incorrect username or password.");
+        }
+    }
+
+    public void switchToRegister(ActionEvent event) throws IOException {
+        String fxml = "register.fxml";
+        switchScenes(event, fxml);
+    }
+
+    public void userRegister(ActionEvent event) throws IOException {
+        String newName = username.getText();
+        String newPassword = password.getText();
+        String confirmNewPass = confirmPassword.getText();
+        checkRegister(event, newName, newPassword, confirmNewPass);
+    }
+
+    public void goBackToLogIn(ActionEvent event) throws IOException {
+        String fxml = "login.fxml";
+        switchScenes(event, fxml);
+    }
+
+    private void checkRegister(ActionEvent event, String newUser, String newPassword, String confirmNewPassword) throws IOException {
+        if (service.doesNameExists(newUser)) {
+            registerError.setText("Username already taken");
+        } else if (!service.doCreatedPasswordsMatch(newPassword, confirmNewPassword)) {
+            registerError.setText("Passwords do not match");
+        } else {
+            service.registerUser(newUser, newPassword);
+            Student user = service.getStudentByName(newUser);
+            userSingleton.setCurrentUser(user);
+            switchToMainMenu(event);
         }
     }
 
