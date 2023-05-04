@@ -21,4 +21,5 @@ public class ReviewSystemApplication extends Application {
         stage.setScene(scene);
         stage.show();
     }
+
 }
