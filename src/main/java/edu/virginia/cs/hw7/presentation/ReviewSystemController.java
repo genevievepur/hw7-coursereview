@@ -114,6 +114,11 @@ public class ReviewSystemController implements Initializable {
         switchScenes(event, fxml);
     }
 
+    public void exitApp(ActionEvent event) {
+        service.disconnect();
+        System.exit(0);
+    }
+
     // -------------------------- METHODS FOR REGISTER --------------------------
 
     public void userRegister(ActionEvent event) throws IOException {
@@ -153,8 +158,8 @@ public class ReviewSystemController implements Initializable {
         switchScenes(event, fxml);
     }
 
-    public void logOutPressed(ActionEvent event) {
-
+    public void logOutPressed(ActionEvent event) throws IOException {
+        goBackToLogIn(event);
     }
 
     // -------------------------- METHODS FOR SUBMIT REVIEW --------------------------

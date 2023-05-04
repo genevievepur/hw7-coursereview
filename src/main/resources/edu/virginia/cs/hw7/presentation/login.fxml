@@ -38,9 +38,10 @@
             <TextField fx:id="username" layoutX="122.0" layoutY="98.0" promptText="Username" />
             <PasswordField fx:id="password" layoutX="122.0" layoutY="137.0" promptText="Password" />
             <Button fx:id="login" layoutX="119.0" layoutY="188.0" mnemonicParsing="false" onAction="#userLogin" style="-fx-background-color: #2335ff;" text="Log In" textFill="WHITE" />
-            <Label layoutX="61.0" layoutY="271.0" text="New user? Click here to register." textFill="WHITE" />
-            <Button fx:id="register" layoutX="114.0" layoutY="295.0" mnemonicParsing="false" onAction="#switchToRegister" style="-fx-background-color: #2335ff;" text="Register" textFill="WHITE" />
+            <Label layoutX="61.0" layoutY="254.0" text="New user? Click here to register." textFill="WHITE" />
+            <Button fx:id="register" layoutX="114.0" layoutY="278.0" mnemonicParsing="false" onAction="#switchToRegister" style="-fx-background-color: #2335ff;" text="Register" textFill="WHITE" />
             <Label fx:id="loginError" alignment="CENTER" layoutX="31.0" layoutY="227.0" prefHeight="17.0" prefWidth="231.0" textAlignment="CENTER" textFill="RED" />
+            <Button alignment="CENTER" layoutX="114.0" layoutY="342.0" mnemonicParsing="false" onAction="#exitApp" style="-fx-background-color: #2335ff;" text="Exit App" textFill="WHITE" />
          </children>
       </AnchorPane>
    </right>

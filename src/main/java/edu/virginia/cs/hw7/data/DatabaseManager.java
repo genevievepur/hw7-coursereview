@@ -160,6 +160,8 @@ public class DatabaseManager {
 
             String password = rs.getString("Password");
             student = new Student(name, password);
+            rs.close();
+            st.close();
         } catch (SQLException e) {
             throw new IllegalStateException(e);
         }
@@ -182,6 +184,8 @@ public class DatabaseManager {
             String name = rs.getString("Name");
             String password = rs.getString("Password");
             student = new Student(name, password);
+            rs.close();
+            st.close();
         } catch (SQLException e) {
             throw new IllegalStateException(e);
         }
@@ -245,6 +249,8 @@ public class DatabaseManager {
 
             String department = rs.getString("Department");
             int catalogNum = rs.getInt("Catalog_Number");
+            rs.close();
+            st.close();
             course = new Course(department, catalogNum);
         } catch (SQLException e) {
             throw new IllegalStateException(e);
@@ -294,6 +300,8 @@ public class DatabaseManager {
             }
 
             studentID = rs.getInt("ID");
+            rs.close();
+            st.close();
 
         } catch (SQLException e) {
             throw new IllegalStateException(e);
@@ -320,7 +328,8 @@ public class DatabaseManager {
             }
 
             courseID = rs.getInt("ID");
-
+            rs.close();
+            st.close();
         } catch (SQLException e) {
             throw new IllegalStateException(e);
         }

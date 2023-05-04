@@ -48,7 +48,7 @@
                   <Image url="@logo_horizontal.jpg" />
                </image>
             </ImageView>
-            <Button fx:id="logout" layoutX="464.0" layoutY="22.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="78.0" style="-fx-background-color: #2335ff;" text="Log Out" textFill="WHITE">
+            <Button fx:id="logout" layoutX="464.0" layoutY="22.0" mnemonicParsing="false" onAction="#logOutPressed" prefHeight="31.0" prefWidth="78.0" style="-fx-background-color: #2335ff;" text="Log Out" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>

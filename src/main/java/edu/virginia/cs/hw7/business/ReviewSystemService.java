@@ -119,4 +119,8 @@ public class ReviewSystemService {
         average = Math.floor(average * 100) / 100;
         return average;
     }
+
+    public void disconnect() {
+        dbManager.disconnect();
+    }
 }
