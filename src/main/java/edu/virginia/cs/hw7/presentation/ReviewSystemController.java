@@ -194,6 +194,7 @@ public class ReviewSystemController implements Initializable {
         catNumError.setText("");
         ratingError.setText("");
         textError.setText("");
+        emptyError.setText("");
 
         String departmentEntered = department.getText();
         String catNumString = catalogNum.getText();
@@ -221,7 +222,10 @@ public class ReviewSystemController implements Initializable {
     }
 
     private boolean isValidDepartment(String department) {
-        if (!service.isDepartmentValid(department)) {
+        if (department.equals("")) {
+            departmentError.setText("Please enter a department");
+            return false;
+        } else if (!service.isDepartmentValid(department)) {
             departmentError.setText("Invalid department");
             return false;
         }
@@ -263,14 +267,24 @@ public class ReviewSystemController implements Initializable {
         if (!service.doesCourseExists(department, catNum)) {
             service.addCourse(course);
             service.addReview(currentUser, course, text, rating);
+            emptyError.setText("Review submitted!");
+            clearTextFields();
         } else {
             if (service.hasUserSubmittedCourseReviewAlready(currentUser, course)) {
                 emptyError.setText("You have already reviewed this course.");
             } else {
                 emptyError.setText("Review submitted!");
                 service.addReview(currentUser, course, text, rating);
+                clearTextFields();
             }
         }
+    }
+
+    private void clearTextFields() {
+        department.setText("");
+        catalogNum.setText("");
+        rating.setText("");
+        reviewText.setText("");
     }
 
     // -------------------------- METHODS FOR SEEING REVIEWS --------------------------
