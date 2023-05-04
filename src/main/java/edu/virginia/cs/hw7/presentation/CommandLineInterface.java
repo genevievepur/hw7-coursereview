@@ -136,11 +136,11 @@ public class CommandLineInterface {
             System.out.print("Enter course department (e.g., CS): ");
             String department = scanner.nextLine();
             System.out.print("Enter course number: ");
-            String number = scanner.nextLine();
-            System.out.print("Enter semester (e.g., Spring 2022): ");
-            String semester = scanner.nextLine();
-            System.out.print("Enter year (e.g., 2022): ");
-            int year = getIntegerInput();
+            int number = Integer.parseInt(scanner.nextLine());
+//            System.out.print("Enter semester (e.g., Spring 2022): ");
+//            String semester = scanner.nextLine();
+//            System.out.print("Enter year (e.g., 2022): ");
+//            int year = getIntegerInput();
             System.out.print("Enter your rating (1-5): ");
             int rating = getIntegerInput();
             System.out.print("Enter your written review: ");
@@ -152,7 +152,7 @@ public class CommandLineInterface {
                 return;
             }
 
-            Review review = new Review(loggedInUser, course, semester, year, rating, text);
+            Review review = new Review(loggedInUser, course, text, rating);
             dbManager.addReview(review);
             System.out.println("Review submitted successfully!");
         }
@@ -161,18 +161,18 @@ public class CommandLineInterface {
             System.out.print("Enter course department (e.g., CS): ");
             String department = scanner.nextLine();
             System.out.print("Enter course number: ");
-            String number = scanner.nextLine();
-            Course course = dbManager.getCourseByDepartmentAndNumber(department, number);
+            int number = Integer.parseInt(scanner.nextLine());
+            Course course = dbManager.getCourseByDepartmentAndCatalogNumber(department, number);
             if (course == null) {
                 System.out.println("No such course exists.");
                 return;
             }
 
-            List<Review> reviews = dbManager.getReviewsByCourse(course);
+            List<Review> reviews = dbManager.getReviewsOfCourse(course);
             if (reviews.isEmpty()) {
                 System.out.println("There are no reviews for this course yet.");
             } else {
-                System.out.println("Reviews for " + course.getDepartment() + " " + course.getNumber() + ":");
+                System.out.println("Reviews for " + course.getDepartment() + " " + course.getCatalogNumber() + ":");
                 for (Review review : reviews) {
                     System.out.println(review.getStudent().getName() + " - " + review.getRating() + " stars");
                     System.out.println(review.getText());

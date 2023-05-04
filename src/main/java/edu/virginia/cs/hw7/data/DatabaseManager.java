@@ -341,15 +341,19 @@ public class DatabaseManager {
     }
 
 
-    public int getStudentID(Student student) throws SQLException {
+    public int getStudentID(Student student) {
+        String name = student.getName();
+        // String password = student.getPassword();
         int studentID;
 
         try {
-             PreparedStatement statement = connection.prepareStatement("SELECT ID FROM Students WHERE Name = ?")) {
+            if (connection.isClosed()) { throw new IllegalStateException("Manager has not connected yet."); }
 
-            statement.setString(1, student.getName());
-
-            ResultSet rs = statement.executeQuery();
+            Statement st = connection.createStatement();
+            String selectQuery = String.format("""
+                   SELECT * FROM Students WHERE Name = "%s";
+                   """, name);
+            ResultSet rs = st.executeQuery(selectQuery);
 
             if (!rs.next()) {
                 throw new IllegalArgumentException("No such student exists in database.");
@@ -358,12 +362,11 @@ public class DatabaseManager {
             studentID = rs.getInt("ID");
 
         } catch (SQLException e) {
-            throw new IllegalStateException("Error when trying to retrieve student ID from the database", e);
+            throw new IllegalStateException(e);
         }
-
         return studentID;
     }
-    }
+
 
     public int getCourseID(Course course) {
         String department = course.getDepartment();
@@ -521,7 +524,7 @@ public class DatabaseManager {
     }
 
 
-    public Course getCourse(String department, int catalogNumber) {
+    public Course getCourseByDepartmentAndCatalogNumber(String department, int catalogNumber) {
         try (Statement st = connection.createStatement()) {
             String selectQuery = String.format("""
                SELECT * FROM Courses WHERE Department = "%s" AND Catalog_Number = "%d";
