@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.scene.control.TextArea;
 
 import java.io.IOException;
 import java.net.URL;
@@ -47,6 +48,9 @@ public class ReviewSystemController implements Initializable {
     @FXML
     private Button backToLogin;
 
+    @FXML
+    private TextField reviewText;
+
     // FXMLs for Main Menu
     @FXML
     private Label welcomeText;
@@ -64,8 +68,7 @@ public class ReviewSystemController implements Initializable {
     private TextField catalogNum;
     @FXML
     private TextField rating;
-    @FXML
-    private TextField reviewText;
+
     @FXML
     private Label departmentError;
     @FXML
