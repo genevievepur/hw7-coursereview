@@ -403,10 +403,9 @@ public class DatabaseManager {
         try {
             if (connection != null && !connection.isClosed()) {
                 connection.close();
-                System.out.println("Disconnected from database.");
             }
         } catch (SQLException e) {
-            System.err.println("Error disconnecting from database: " + e.getMessage());
+            throw new IllegalStateException(e);
         }
     }
 }
