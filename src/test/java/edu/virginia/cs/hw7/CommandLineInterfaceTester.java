@@ -4,7 +4,7 @@ package edu.virginia.cs.hw7;
 import edu.virginia.cs.hw7.Review;
 import edu.virginia.cs.hw7.data.DatabaseManager;
 import org.junit.jupiter.api.BeforeEach;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 
 import java.util.List;

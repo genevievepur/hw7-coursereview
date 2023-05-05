@@ -178,9 +178,16 @@ public class ReviewSystemServiceTester {
         Course course = new Course("CS", 1110);
         String text = "Great course!";
         int rating = 5;
+
+        Course course2 = new Course("APMA", 3100);
+        String text2 = "It was hard to stay on top of all the work";
+        int rating2 = 3;
+
         Review review = new Review(student, course, text, rating);
+        Review review2 = new Review(student, course2, text2, rating2);
         List<Review> expectedReviews = new ArrayList<>();
         expectedReviews.add(review);
+        expectedReviews.add(review2);
 
         List<Review> actualReviews = testService.getStudentReviews(student);
 
@@ -237,6 +244,5 @@ public class ReviewSystemServiceTester {
 
         assertEquals(expected, actual, 0.1);
     }
-
 
 }
