@@ -227,11 +227,17 @@ public class ReviewSystemController implements Initializable {
             ratingError.setText("Please enter a number");
         }
 
-        if (isValidDepartment(departmentEntered) && isValidCatalogNumber(catNumEntered)
-                && isValidRating(ratingEntered) && isValidText(reviewTextEntered)) {
+        boolean validDepartment = isValidDepartment(departmentEntered);
+        boolean validCatalogNumber = isValidCatalogNumber(catNumEntered);
+        boolean validRating = isValidRating(ratingEntered);
+        boolean validText = isValidText(reviewTextEntered);
+
+        // Only proceed if all input fields are valid
+        if (validDepartment && validCatalogNumber && validRating && validText) {
             submitReview(departmentEntered, catNumEntered, reviewTextEntered, ratingEntered);
         }
     }
+
 
     private boolean isValidDepartment(String department) {
         if (department.equals("")) {
@@ -255,14 +261,17 @@ public class ReviewSystemController implements Initializable {
     }
 
     private boolean isValidRating(int rating) {
-        if (!service.isRatingValid(rating)) {
-            if (!ratingError.getText().equals("Please enter a number")) {
-                ratingError.setText("Please enter number 1-5");
-                return false;
-            }
+        if (rating == -1) {
+            return false;
         }
-        return true;
+        if (rating >= 1 && rating <= 5) {
+            return true;
+        } else {
+            ratingError.setText("Please enter a rating between 1 and 5");
+            return false;
+        }
     }
+
 
     private boolean isValidText(String text) {
         if (text.equals("")) {
