@@ -19,7 +19,7 @@ public class CommandLineInterfaceTester {
 
     @BeforeEach
     public void setUp() {
-        testDbManager = new DatabaseManager("jdbc:sqlite:test-database.db");
+        testDbManager = new DatabaseManager();
     }
 
 

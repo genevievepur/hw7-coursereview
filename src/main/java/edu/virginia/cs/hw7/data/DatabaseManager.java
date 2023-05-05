@@ -12,22 +12,22 @@ import java.util.List;
 public class DatabaseManager {
     Connection connection;
 
-    public DatabaseManager() {
-        String defaultDatabaseUrl = "jdbc:sqlite:reviews.sqlite3";
-        try {
-            connection = DriverManager.getConnection(defaultDatabaseUrl);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public DatabaseManager(String databaseUrl) {
-        try {
-            connection = DriverManager.getConnection(databaseUrl);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+//    public DatabaseManager() {
+//        String defaultDatabaseUrl = "jdbc:sqlite:reviews.sqlite3";
+//        try {
+//            connection = DriverManager.getConnection(defaultDatabaseUrl);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    public DatabaseManager(String databaseUrl) {
+//        try {
+//            connection = DriverManager.getConnection(databaseUrl);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public void connect() {
         String databaseName = "Reviews.sqlite3";

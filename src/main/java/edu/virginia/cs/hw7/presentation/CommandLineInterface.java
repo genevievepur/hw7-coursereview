@@ -14,7 +14,7 @@ public class CommandLineInterface {
     private final Scanner scanner;
 
     public CommandLineInterface() {
-        this(new DatabaseManager("jdbc:sqlite:reviews.sqlite3"));
+        this(new DatabaseManager());
     }
 
     public CommandLineInterface(DatabaseManager dbManager) {
