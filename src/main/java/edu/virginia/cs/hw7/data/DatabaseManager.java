@@ -39,7 +39,7 @@ public class DatabaseManager {
                 "Department VARCHAR(4) NOT NULL, Catalog_Number INT(4) NOT NULL)";
 
         String sqlCreateReviews = "CREATE TABLE IF NOT EXISTS Reviews (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                "StudentID INT(5) NOT NULL, CourseID INT(5) NOT NULL, Text VARCHAR(255) NOT NULL, " +
+                "StudentID INT(5) NOT NULL, CourseID INT(5) NOT NULL, Text VARCHAR(4096) NOT NULL, " +
                 "Rating INT(1) NOT NULL, FOREIGN KEY (StudentID) REFERENCES Students(ID) ON DELETE CASCADE, " +
                 "FOREIGN KEY (CourseID) REFERENCES Courses(ID) ON DELETE CASCADE)";
 

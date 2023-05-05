@@ -109,8 +109,8 @@ public class ReviewSystemController implements Initializable {
     }
 
     private void checkLogin(ActionEvent event) throws IOException {
-        String name = username.getText();
-        String enteredPassword = password.getText();
+        String name = username.getText().strip();
+        String enteredPassword = password.getText().strip();
         if (service.doesNameExists(name)) {
             Student student = service.getStudentByName(name);
             if (service.isPasswordEnteredCorrect(name, enteredPassword)) {
@@ -138,9 +138,9 @@ public class ReviewSystemController implements Initializable {
     // -------------------------- METHODS FOR REGISTER --------------------------
 
     public void userRegister(ActionEvent event) throws IOException {
-        String newName = username.getText();
-        String newPassword = password.getText();
-        String confirmNewPass = confirmPassword.getText();
+        String newName = username.getText().strip();
+        String newPassword = password.getText().strip();
+        String confirmNewPass = confirmPassword.getText().strip();
         checkRegister(event, newName, newPassword, confirmNewPass);
     }
 
@@ -196,9 +196,9 @@ public class ReviewSystemController implements Initializable {
         textError.setText("");
         emptyError.setText("");
 
-        String departmentEntered = department.getText();
-        String catNumString = catalogNum.getText();
-        String ratingString = rating.getText();
+        String departmentEntered = department.getText().strip();
+        String catNumString = catalogNum.getText().strip();
+        String ratingString = rating.getText().strip();
         String reviewTextEntered = reviewText.getText();
 
         int catNumEntered = -1;
@@ -295,8 +295,8 @@ public class ReviewSystemController implements Initializable {
         errorOrRating.setText("");
         displayBox.getChildren().clear();
 
-        String departmentEntered = department.getText();
-        String catNumString = catalogNum.getText();
+        String departmentEntered = department.getText().strip();
+        String catNumString = catalogNum.getText().strip();
 
         int catNumEntered = -1;
         try {
