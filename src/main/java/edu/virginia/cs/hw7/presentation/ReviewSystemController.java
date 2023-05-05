@@ -19,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
@@ -354,9 +355,10 @@ public class ReviewSystemController implements Initializable {
     private void addReviewLabels(List<Review> courseReviews) {
         for (Review review : courseReviews) {
             String reviewText = getReviewString(review);
-            Label toAdd = new Label(reviewText);
-            toAdd.setTextFill(Color.WHITE);
+            Text toAdd = new Text(reviewText);
+            toAdd.setFill(Color.WHITE);
             toAdd.setFont(new Font("System", 15));
+            toAdd.wrappingWidthProperty().bind(displayBox.widthProperty());
             displayBox.getChildren().add(toAdd);
         }
     }
