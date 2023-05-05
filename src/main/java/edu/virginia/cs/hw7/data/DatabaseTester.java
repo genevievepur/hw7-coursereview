@@ -4,6 +4,7 @@ package edu.virginia.cs.hw7.data;
 import edu.virginia.cs.hw7.Course;
 import edu.virginia.cs.hw7.Review;
 import edu.virginia.cs.hw7.Student;
+import edu.virginia.cs.hw7.business.UserSingleton;
 
 
 import java.util.ArrayList;
@@ -14,6 +15,16 @@ public class DatabaseTester {
 
 
     public static void main(String[] args) {
+//        UserSingleton userSingleton = UserSingleton.getInstance();
+//        if (userSingleton.getDbManager() == null) {
+//            userSingleton.setDbManager(new DatabaseManager());
+//        }
+//
+//        userSingleton.getDbManager().connect();
+//        userSingleton.getDbManager().deleteTables();
+//        userSingleton.getDbManager().createTables();
+//        userSingleton.getDbManager().disconnect();
+//    }
         DatabaseManager dbManager = new DatabaseManager();
         dbManager.connect();
         dbManager.deleteTables();
