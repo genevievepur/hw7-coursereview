@@ -26,6 +26,16 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ReviewSystemController implements Initializable {
+    // URL: https://www.youtube.com/watch?v=HBBtlwGpBek
+    // Description: I used the basic format of the login screen that this tutorial (provided to us by Grant Sweeney on
+    // a piazza post a month ago) demonstrated. I also got the code to switch stages from this tutorial.
+    // Code is implemented in login.fxml and switchScenes() method (lines 108-114).
+
+    // URL: https://youtu.be/MsgiJdf5njc
+    // Description: This tutorial gave an understanding of how to transfer the current user between stages. I used the
+    // basis of their code they provided in their DataSingleton in my UserSingleton and a specific line of code in
+    // line 41.
+
     //Student currentUser;
     ReviewSystemService service;
     UserSingleton userSingleton = UserSingleton.getInstance();
