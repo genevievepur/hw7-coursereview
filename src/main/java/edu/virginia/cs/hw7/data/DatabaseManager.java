@@ -12,6 +12,23 @@ import java.util.List;
 public class DatabaseManager {
     Connection connection;
 
+    public DatabaseManager() {
+        String defaultDatabaseUrl = "jdbc:sqlite:reviews.sqlite3";
+        try {
+            connection = DriverManager.getConnection(defaultDatabaseUrl);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public DatabaseManager(String databaseUrl) {
+        try {
+            connection = DriverManager.getConnection(databaseUrl);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void connect() {
         String databaseName = "Reviews.sqlite3";
         String databaseURL = "jdbc:sqlite:" + databaseName;
@@ -398,6 +415,79 @@ public class DatabaseManager {
             throw new IllegalStateException(e);
         }
         return reviews;
+    }
+
+    public boolean addReview(String studentName, String department, int courseNumber, String comment, int rating) {
+        if (doesNameExist(studentName)) {
+            Student student = getStudentByName(studentName);
+            Course course;
+
+            if (!doesCourseExist(department, courseNumber)) {
+                course = new Course(department, courseNumber);
+                addCourse(course);
+            } else {
+                course = getCourseByDepartmentAndCatalogNumber(department, courseNumber);
+            }
+
+            Review review = new Review(student, course, comment, rating);
+            addReview(review);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean createStudent(String name, String password) {
+        if (doesNameExist(name)) {
+            return false;
+        } else {
+            addStudent(new Student(name, password));
+            return true;
+        }
+    }
+
+    public boolean isPasswordCorrect(String name, String password) {
+        if (doesNameExist(name)) {
+            Student student = getStudentByName(name);
+            return student.getPassword().equals(password);
+        } else {
+            return false;
+        }
+    }
+
+    public List<Review> getReviewsForCourse(String department, int courseNumber) {
+        if (doesCourseExist(department, courseNumber)) {
+            Course course = getCourseByDepartmentAndCatalogNumber(department, courseNumber);
+            return getReviewsOfCourse(course);
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+
+    public Course getCourseByDepartmentAndCatalogNumber(String department, int catalogNumber) {
+        Course course;
+        try {
+            if (connection.isClosed()) { throw new IllegalStateException("Manager has not connected yet."); }
+
+
+            Statement st = connection.createStatement();
+            String selectQuery = String.format("""
+               SELECT * FROM Courses WHERE Department = "%s" AND Catalog_Number = "%d";
+               """, department, catalogNumber);
+            ResultSet rs = st.executeQuery(selectQuery);
+
+
+            if (!rs.next()) {
+                throw new IllegalArgumentException("No such course exists in database.");
+            }
+
+
+            course = new Course(department, catalogNumber);
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        }
+        return course;
     }
     public void disconnect() {
         try {
